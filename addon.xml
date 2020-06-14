@@ -1,4 +1,4 @@
-<addon id="script.kcleaner" name="KCleaner" provider-name="Dalibor Lanik" version="3.31"> 
+<addon id="script.kcleaner" name="KCleaner" provider-name="Dalibor Lanik" version="3.4"> 
   <requires>
     <import addon="xbmc.python" version="2.1.0" /> 
   </requires>
