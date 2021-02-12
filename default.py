@@ -1,5 +1,5 @@
 # ============================================================
-# KCleaner - Version 3.4 by D. Lanik (2017)
+# KCleaner - Version 4.0 by D. Lanik (2017)
 # ------------------------------------------------------------
 # Clean up Kodi
 # ------------------------------------------------------------
@@ -15,9 +15,8 @@ import os
 import shutil
 import sqlite3
 import json
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import gzip
-import urllib
 import sys
 import codecs
 import pickle
@@ -64,7 +63,7 @@ def ProcessBrokenSources(iMode):
         message1 = strMess + k
         message2 = strMess2 + str(int(c)) + " / " + str(int(intObjects))
 
-        progress.update(int(percent), unicode(message1), unicode(message2))
+        progress.update(int(percent), str(message1) + str(message2))
 
         c += 1
 
@@ -75,11 +74,11 @@ def ProcessBrokenSources(iMode):
                     afg = xbmc.translatePath(jj["file"])
 
                     if xbmcvfs.exists(afg):
-                        xbmc.log("KCLEANER >> SOURCE PATHS (" + k.encode('utf8') +") >> " + afg.encode('utf8') + " >> ok")
+                        xbmc.log("KCLEANER >> SOURCE PATHS (" + k +") >> " + afg + " >> ok")
                     else:
-                        xbmc.log("KCLEANER >> SOURCE PATHS (" + k.encode('utf8') +") >> " + afg.encode('utf8') + " >> error")
+                        xbmc.log("KCLEANER >> SOURCE PATHS (" + k +") >> " + afg + " >> error")
                         mess1 = __addon__.getLocalizedString(30123)             # CAN NOT BE FOUND
-                        strEndMessage += "[SOURCE:" + k.encode('utf8') + "] " + afg.encode('utf8') + " [B][COLOR red]" + mess1 + "[/B][/COLOR]\n"
+                        strEndMessage += "[SOURCE:" + k + "] " + afg + " [B][COLOR red]" + mess1 + "[/B][/COLOR]\n"
 
     progress.close()
 
@@ -229,7 +228,7 @@ def CalcDeleted():
     msizes.append(['total', mess])
 
     for i, line in enumerate(msizes):
-        xbmc.log("KCLEANER >> CALCULATED SAVINGS >> " + str(line).encode('utf8'))
+        xbmc.log("KCLEANER >> CALCULATED SAVINGS >> " + str(line))
 
     return msizes
 
@@ -282,7 +281,7 @@ def ProcessSpecial(iMode):
                     message1 = strMess + str(f)
                     message2 = strMess2 + str(int(counter)) + " / " + str(int(intObjects))
 
-                    progress.update(int(percent), unicode(message1), unicode(message2))
+                    progress.update(int(percent), str(message1) + str(message2))
 
                     if not iMode:
                         try:
@@ -308,7 +307,7 @@ def ProcessSpecial(iMode):
                         if userDataPath in line:
                             newline = line.replace(userDataPath, "special://userdata/")
                             newline = newline.replace("\\", "/")
-                            xbmc.log("KCLEANER >> COMPACTING PATH: " + root.encode('utf8') + "\\" + f.encode('utf8'))
+                            xbmc.log("KCLEANER >> COMPACTING PATH: " + root + "\\" + f)
                             wasChanged = True
                         else:
                             newline = line
@@ -402,7 +401,7 @@ def CleanTextures(iMode):
         message2 = strMess2 + str(int(counter)) + " / " + str(int(intObjects))
 
         if iMode < 2:
-            progress.update(int(percent), unicode(message1), unicode(message2))
+            progress.update(int(percent), str(message1) + str(message2))
 
         if iMode == 0:
             try:
@@ -588,7 +587,7 @@ def DeleteFiles(cleanIt, iMode):
                             message2 = strMess2 + str(int(count)) + " / " + str(int(intObjects))
 
                             if iMode < 2:
-                                progress.update(int(percent), unicode(message1), unicode(message2))
+                                progress.update(int(percent), str(message1) + str(message2))
 
                             if iMode == 0:
                                 try:
@@ -609,9 +608,9 @@ def DeleteFiles(cleanIt, iMode):
                                         os.unlink(os.path.join(root, f))
                                         TotalfileSize += fileSize
                                         if booDebug:
-                                            xbmc.log("KCLEANER >> DELETED >>" + f.encode('utf8'))
+                                            xbmc.log("KCLEANER >> DELETED >>" + f)
                                     except Exception as e:
-                                        xbmc.log("KCLEANER >> CAN NOT DELETE FILE >>" + f.encode('utf8') + "<< ERROR: " + str(e))
+                                        xbmc.log("KCLEANER >> CAN NOT DELETE FILE >>" + f + "<< ERROR: " + str(e))
 
                                     count += 1
 
@@ -628,9 +627,9 @@ def DeleteFiles(cleanIt, iMode):
                                         os.unlink(os.path.join(root, f))
                                         TotalfileSize += fileSize
                                         if booDebug:
-                                            xbmc.log("KCLEANER >> DELETED >>" + f.encode('utf8'))
+                                            xbmc.log("KCLEANER >> DELETED >>" + f)
                                     except Exception as e:
-                                        xbmc.log("KCLEANER >> CAN NOT DELETE FILE >>" + f.encode('utf8') + "<< ERROR: " + str(e))
+                                        xbmc.log("KCLEANER >> CAN NOT DELETE FILE >>" + f + "<< ERROR: " + str(e))
 
                                     count += 1
 
@@ -639,9 +638,9 @@ def DeleteFiles(cleanIt, iMode):
                                     os.unlink(os.path.join(root, f))
                                     TotalfileSize += fileSize
                                     if booDebug:
-                                        xbmc.log("KCLEANER >> DELETED >>" + f.encode('utf8'))
+                                        xbmc.log("KCLEANER >> DELETED >>" + f)
                                 except Exception as e:
-                                    xbmc.log("KCLEANER >> CAN NOT DELETE FILE >>" + f.encode('utf8') + "<< ERROR: " + str(e))
+                                    xbmc.log("KCLEANER >> CAN NOT DELETE FILE >>" + f + "<< ERROR: " + str(e))
 
                                 count += 1
 
@@ -651,9 +650,9 @@ def DeleteFiles(cleanIt, iMode):
                                     try:
                                         shutil.rmtree(os.path.join(root, d))
                                         if booDebug:
-                                            xbmc.log("KCLEANER >> DELETED >>" + d.encode('utf8'))
+                                            xbmc.log("KCLEANER >> DELETED >>" + d)
                                     except Exception as e:
-                                        xbmc.log("KCLEANER >> CAN NOT DELETE FOLDER >>" + d.encode('utf8') + "<< ERROR: " + str(e))
+                                        xbmc.log("KCLEANER >> CAN NOT DELETE FOLDER >>" + d + "<< ERROR: " + str(e))
                     else:
                         pass
 
@@ -665,14 +664,14 @@ def DeleteFiles(cleanIt, iMode):
                     mess2 = __addon__.getLocalizedString(30112)                        # Mb:
                     mess3 = " %0.2f " % ((TotalfileSize / (1048576.00000001)),)
 
-                    mess = entry[3].title().encode('utf8') + " (" + entry[0].encode('utf8') + "): " + entry[0].encode('utf8') + mess1 + mess3 + mess2
+                    mess = entry[3].title() + " (" + entry[0] + "): " + entry[0] + mess1 + mess3 + mess2
                     strEndMessage += (mess + "\n")
 
-                    xbmc.log("KCLEANER >> CLEANING >> " + mess.encode('utf8'))
+                    xbmc.log("KCLEANER >> CLEANING >> " + mess)
                     intTot = TotalfileSize / 1048576.00000001
                     grandTotal += TotalfileSize
                 else:
-                    strEndMessage += (entry[3].title().encode('utf8') + " (" + entry[0].encode('utf8') + ") : ")
+                    strEndMessage += (entry[3].title() + " (" + entry[0] + ") : ")
                     strEndMessage += __addon__.getLocalizedString(30150) + "\n"                   # No files deleted
 
                 TotalfileSize = 0.0
@@ -769,7 +768,7 @@ def CompactDatabases(iMode):
             message2 = strMess2 + str(int(counter)) + " / " + str(int(intObjects))
 
             if iMode < 2:
-                progress.update(int(percent), unicode(message1), unicode(message2))
+                progress.update(int(percent), str(message1) + str(message2))
 
             if iMode == 0:
                 try:
@@ -783,14 +782,14 @@ def CompactDatabases(iMode):
             CompactDB(os.path.join(dbPath, f))
             fileSizeAfter = os.path.getsize(os.path.join(dbPath, f))
 
-            xbmc.log("KCLEANER >> COMPACTED DATABASE >>" + f.encode('utf8'))
+            xbmc.log("KCLEANER >> COMPACTED DATABASE >>" + f)
 
             if fileSizeAfter != fileSizeBefore:
                 mess1 = __addon__.getLocalizedString(30110)             # Database
                 mess2 = __addon__.getLocalizedString(30111)             # compacted:
                 mess3 = " %0.2f " % (((fileSizeBefore - fileSizeAfter) / (1048576.00000001)),)
                 mess4 = __addon__.getLocalizedString(30112)             # Mb
-                strEndMessage += mess1 + f.encode('utf8') + mess2 + mess3 + mess4 + "\n"
+                strEndMessage += mess1 + f + mess2 + mess3 + mess4 + "\n"
 
                 intTot += (fileSizeBefore - fileSizeAfter) / 1048576.00000001
                 GreatTotal += (fileSizeBefore - fileSizeAfter)
@@ -828,7 +827,7 @@ def getLocalRepos():
     for f in repos:
         installedRepos.append(f["addonid"])
         if booDebug:
-            xbmc.log("KCLEANER >> INSTALLED REPOS >>" + f["addonid"].encode('utf8'))
+            xbmc.log("KCLEANER >> INSTALLED REPOS >>" + f["addonid"])
 
     count = len(installedRepos)
 
@@ -848,7 +847,7 @@ def getLocalAddons():
         if f["type"] != "xbmc.addon.repository":
             installedAddons.append(f["addonid"])
             if booDebug:
-                xbmc.log("KCLEANER >> INSTALLED ADDONS >>" + f["addonid"].encode('utf8'))
+                xbmc.log("KCLEANER >> INSTALLED ADDONS >>" + f["addonid"])
 
     count = len(installedAddons)
 
@@ -913,7 +912,7 @@ def deleteAddonData(iMode):
         message2 = strMess2 + str(int(deleted)) + " / " + str(int(intObjects))
 
         if iMode < 2:
-            progress.update(int(percent), unicode(message1), unicode(message2))
+            progress.update(int(percent), str(message1) + str(message2))
 
         if iMode == 0:
             try:
@@ -929,7 +928,7 @@ def deleteAddonData(iMode):
 
             try:
                 shutil.rmtree(fullName)
-                xbmc.log("KCLEANER >> DELETING UNUSED ADDON DATA FOLDER >>" + fullName.encode('utf8'))
+                xbmc.log("KCLEANER >> DELETING UNUSED ADDON DATA FOLDER >>" + fullName)
                 deleted += 1
             except Exception as e:
                 xbmc.log("KCLEANER >> ERROR DELETING UNUSED ADDON DATA FOLDER: " + str(e))
@@ -1041,7 +1040,7 @@ def ProcessAddons(iMode):
         message1 = strMess + r
         message2 = strMess2 + str(int(c)) + " / " + str(int(intObjects))
 
-        progress.update(int(percent), unicode(message1), unicode(message2))
+        progress.update(int(percent), str(message1) + str(message2))
 
         if not iMode:
             try:
@@ -1061,7 +1060,7 @@ def ProcessAddons(iMode):
         message1 = strMess + a
         message2 = strMess2 + str(int(c)) + " / " + str(int(intObjects))
 
-        progress.update(int(percent), unicode(message1), unicode(message2))
+        progress.update(int(percent), str(message1) + str(message2))
 
         if not iMode:
             try:
@@ -1075,9 +1074,9 @@ def ProcessAddons(iMode):
             continue
 
         if a in AddonsInRepo:
-            xbmc.log("KCLEANER >> ADDON >> " + a.encode('utf8') + " >> FOUND")
+            xbmc.log("KCLEANER >> ADDON >> " + a + " >> FOUND")
         else:
-            xbmc.log("KCLEANER >> ADDON >> " + a.encode('utf8') + " >> IS IN NO REPOSITORY")
+            xbmc.log("KCLEANER >> ADDON >> " + a + " >> IS IN NO REPOSITORY")
             mess1 = __addon__.getLocalizedString(30122)             # IS IN NO REPOSITORY
             strEndMessage += a + " [B][COLOR red]" + mess1 + "[/B][/COLOR]\n"
 
@@ -1121,7 +1120,7 @@ def ProcessRepos(iMode):
         else:
             repoxml = os.path.join(xbmc.translatePath("special://home"), "addons", r, "addon.xml")
 
-        xbmc.log("KCLEANER >> PROCESSING REPO >>" + r.encode('utf8'))
+        xbmc.log("KCLEANER >> PROCESSING REPO >>" + r)
 
         strMess = __addon__.getLocalizedString(30025)             # Checking:
         strMess2 = __addon__.getLocalizedString(30026)            # Checked:
@@ -1131,7 +1130,7 @@ def ProcessRepos(iMode):
         message1 = strMess + r
         message2 = strMess2 + str(int(c)) + " / " + str(int(intObjects))
 
-        progress.update(int(percent), unicode(message1), unicode(message2))
+        progress.update(int(percent), str(message1)  + str(message2))
 
         if not iMode:
             try:
@@ -1144,7 +1143,7 @@ def ProcessRepos(iMode):
         AddonsInRepo = GetAddonsInRepo(repoxml, r)
 
         if len(AddonsInRepo) == 0:
-            xbmc.log("KCLEANER >> REPO >> " + r + " >> " + repoxml.encode('utf8') + " >> EMPTY OR ERROR")
+            xbmc.log("KCLEANER >> REPO >> " + r + " >> " + repoxml + " >> EMPTY OR ERROR")
             mess1 = __addon__.getLocalizedString(30120)             # EMPTY OR ERROR READING
             strEndMessage += r + " [B][COLOR red]" + mess1 + "[/B][/COLOR]\n"
         else:
@@ -1154,13 +1153,13 @@ def ProcessRepos(iMode):
                     similar.append(tup)
 
             if len(similar) == 0:
-                xbmc.log("KCLEANER >> REPO >> " + r.encode('utf8') + " >> CONTAINS NO LOCAL ADDONS")
+                xbmc.log("KCLEANER >> REPO >> " + r + " >> CONTAINS NO LOCAL ADDONS")
                 mess1 = __addon__.getLocalizedString(30121)             # CONTAINS NO LOCAL ADDONS
                 strEndMessage += r + " [B][COLOR red]" + mess1 + "[/B][/COLOR]\n"
             else:
                 if booDebug:
                     for i in similar:
-                        xbmc.log("KCLEANER >> REPO >> " + r.encode('utf8') + " >> CONTAINS >>" + i.encode('utf8'))
+                        xbmc.log("KCLEANER >> REPO >> " + r + " >> CONTAINS >>" + i)
 
         c += 1
 
@@ -1180,12 +1179,12 @@ def GetAddonsInRepo(netxml, repo):
 
     if os.path.exists(netxml):
         if booDebug:
-            xbmc.log("KCLEANER >> LOCAL XML EXISTS >>" + netxml.encode('utf8'))
+            xbmc.log("KCLEANER >> LOCAL XML EXISTS >>" + netxml)
 
         repopath = getRepoPath(netxml)
 
         if not repopath and booDebug:
-            xbmc.log("KCLEANER >> INFO TAG NOT FOUND IN REPO >>" + netxml.encode('utf8'))
+            xbmc.log("KCLEANER >> INFO TAG NOT FOUND IN REPO >>" + netxml)
 
         for ri in repopath:
             id = getPathAddons(ri, repo)
@@ -1193,11 +1192,11 @@ def GetAddonsInRepo(netxml, repo):
             for addon in id:
                 allAddonsInRepo.append(addon)
                 if booDebug:
-                    xbmc.log("KCLEANER >> ADDON >>" + addon.encode('utf8'))
+                    xbmc.log("KCLEANER >> ADDON >>" + addon)
 
     else:
         if booDebug:
-            xbmc.log("KCLEANER >> LOCAL XML DOES NOT EXIST >>" + netxml.encode('utf8'))
+            xbmc.log("KCLEANER >> LOCAL XML DOES NOT EXIST >>" + netxml)
 
     return allAddonsInRepo
 
@@ -1219,7 +1218,7 @@ def getRepoPath(xmlFile):
         try:
             XmlInfo.append(r.childNodes[0].nodeValue.strip())
             if booDebug:
-                xbmc.log("KCLEANER >> REPO PATHS >>" + r.childNodes[0].nodeValue.encode('utf8'))
+                xbmc.log("KCLEANER >> REPO PATHS >>" + r.childNodes[0].nodeValue)
         except Exception as e:
             xbmc.log("KCLEANER >> ERROR REPO PATHS >>" + str(e).encode('utf-8'))
 
@@ -1236,9 +1235,9 @@ def getPathAddons(xmlFile, repo):
     XmlInfo = []
 
     try:
-        req = urllib2.Request(xmlFile)
+        req = urllib.request.Request(xmlFile)
         req.add_header('User-Agent', ' Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-        response = urllib2.urlopen(req)
+        response = urllib.request.urlopen(req)
         httpdata = response.read()
         response.close()
 
@@ -1248,7 +1247,7 @@ def getPathAddons(xmlFile, repo):
 
     if get_extension(xmlFile) == "gz":
         gzFile = os.path.join(xbmc.translatePath('special://temp'), 'addon.gz')
-        xbmc.log("KCLEANER >> GZFILE >>" + str(gzFile).encode('utf-8'))
+        xbmc.log("KCLEANER >> GZFILE >>" + str(gzFile))
         with open(gzFile, 'wb') as output:
             output.write(httpdata)
 
@@ -1348,7 +1347,7 @@ def showResults():
     global totalSizes
 
     totalSizes = CalcDeleted()
-    fp = open(os.path.join(__addondir__, "shared.pkl"), "w")
+    fp = open(os.path.join(__addondir__, "shared.pkl"), "wb")
     pickle.dump(totalSizes, fp)
     fp.close()
 
@@ -1357,12 +1356,12 @@ def showResults():
         TextBoxes(header, strEndMessage)
     elif intCancel == 1:
         strMess = __addon__.getLocalizedString(30030)                                     # Cleanup [COLOR red]interrupted[/COLOR].
-        xbmc.executebuiltin("XBMC.Notification(%s,%s,5000,%s)" % (__addonname__.encode('utf8'), strMess, __addon__.getAddonInfo('icon')))
+        xbmc.executebuiltin("XBMC.Notification(%s,%s,5000,%s)" % (__addonname__, strMess, __addon__.getAddonInfo('icon')))
     elif intCancel == 2:
         pass
     else:
         strMess = __addon__.getLocalizedString(30031)                                     # Cleanup [COLOR red]done[/COLOR].
-        xbmc.executebuiltin("XBMC.Notification(%s,%s,2000,%s)" % (__addonname__.encode('utf8'), strMess, __addon__.getAddonInfo('icon')))
+        xbmc.executebuiltin("XBMC.Notification(%s,%s,2000,%s)" % (__addonname__, strMess, __addon__.getAddonInfo('icon')))
 
     __addon__.setSetting('lock', 'false')
 
@@ -1496,7 +1495,7 @@ def addLink(name, url, iconimage):
 # ============================================================
 
 def addDir(name, url, mode, iconimage):
-    u = sys.argv[0] + "?url=" + urllib.quote_plus(url.encode('utf8')) + "&mode=" + str(mode) + "&name=" + urllib.quote_plus(name.encode('utf8'))
+    u = sys.argv[0] + "?url=" + urllib.parse.quote_plus(url) + "&mode=" + str(mode) + "&name=" + urllib.parse.quote_plus(name)
     ok = True
     liz = xbmcgui.ListItem(name)
     liz.setArt({'thumb': iconimage})
@@ -1510,7 +1509,7 @@ def addDir(name, url, mode, iconimage):
 # ============================================================
 
 def addItem(name, url, mode, iconimage):
-    u = sys.argv[0] + "?url=" + urllib.quote_plus(url.encode('utf8')) + "&mode=" + str(mode) + "&name=" + urllib.quote_plus(name.encode('utf8'))
+    u = sys.argv[0] + "?url=" + urllib.parse.quote_plus(url) + "&mode=" + str(mode) + "&name=" + urllib.parse.quote_plus(name)
     ok = True
     liz = xbmcgui.ListItem(name)
     liz.setArt({'thumb': iconimage})
@@ -1549,8 +1548,8 @@ def get_params():
 
 
 __addon__ = xbmcaddon.Addon(id='script.kcleaner')
-__addonwd__ = xbmc.translatePath(__addon__.getAddonInfo('path').decode("utf-8"))
-__addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile').decode('utf8'))
+__addonwd__ = xbmc.translatePath(__addon__.getAddonInfo('path'))
+__addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
 __addonname__ = __addon__.getAddonInfo('name')
 __version__ = __addon__.getAddonInfo('version')
 
@@ -1680,11 +1679,11 @@ if __name__ == '__main__':
     mode = None
 
     try:
-        url = urllib.unquote_plus(params["url"])
+        url = urllib.parse.unquote_plus(params["url"])
     except Exception:
         pass
     try:
-        name = urllib.unquote_plus(params["name"])
+        name = urllib.parse.unquote_plus(params["name"])
     except Exception:
             pass
     try:
@@ -1694,13 +1693,13 @@ if __name__ == '__main__':
 
     if mode is None or url is None or len(url) < 1:                                                                # MAIN MENU
         totalSizes = CalcDeleted()
-        fp = open(os.path.join(__addondir__, "shared.pkl"), "w")
+        fp = open(os.path.join(__addondir__, "shared.pkl"), "wb")
         pickle.dump(totalSizes, fp)
         fp.close()
         mainMenu()
 
     elif mode == 1:                                                                                                # CLEAN MENU
-        fp = open(os.path.join(__addondir__, "shared.pkl"))
+        fp = open(os.path.join(__addondir__, "shared.pkl"), "rb")
         totalSizes = pickle.load(fp)
         fp.close()
         CleanMenu()
