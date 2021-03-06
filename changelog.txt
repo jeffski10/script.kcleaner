@@ -1,6 +1,3 @@
-v4.0
-- Python 3 compatibility
-
 v3.4
 - Small fix
 

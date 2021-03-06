@@ -1,5 +1,5 @@
 ﻿# ============================================================
-# KCleaner - Version 4.0 by D. Lanik (2017)
+# KCleaner - Version 3.4 by D. Lanik (2017)
 # ------------------------------------------------------------
 # Clean up Kodi
 # ------------------------------------------------------------
@@ -124,7 +124,7 @@ def AutoClean():
     strMess = __addon__.getLocalizedString(30031) + mess2                  # Cleanup [COLOR red]done[/COLOR].
 
     if a_notif == 1:
-        xbmc.executebuiltin("XBMC.Notification(%s,%s,5000,%s)" % (__addonname__, strMess, __addon__.getAddonInfo('icon')))
+        xbmc.executebuiltin("XBMC.Notification(%s,%s,5000,%s)" % (__addonname__.encode('utf8'), strMess, __addon__.getAddonInfo('icon')))
 
 # ============================================================
 # ------------------------------------------------------------
@@ -134,8 +134,8 @@ def AutoClean():
 
 
 __addon__ = xbmcaddon.Addon(id='script.kcleaner')
-__addonwd__ = xbmc.translatePath(__addon__.getAddonInfo('path'))
-__addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
+__addonwd__ = xbmc.translatePath(__addon__.getAddonInfo('path').decode("utf-8"))
+__addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile').decode('utf8'))
 __addonname__ = __addon__.getAddonInfo('name')
 __version__ = __addon__.getAddonInfo('version')
 
