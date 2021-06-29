@@ -71,7 +71,7 @@ def ProcessBrokenSources(iMode):
             if jj["file"][:9] != "addons://" and jj["file"][:6] != "rss://" and jj["file"][:6] != "ftp://" \
                 and jj["file"][:7] != "sftp://" and jj["file"][:7] != "http://" and jj["file"][:10] != "videodb://" \
                 and jj["file"][:10] != "musicdb://" and jj["file"][:7] != "cdda://":
-                    afg = xbmc.translatePath(jj["file"])
+                    afg = xbmcvfs.translatePath(jj["file"])
 
                     if xbmcvfs.exists(afg):
                         xbmc.log("KCLEANER >> SOURCE PATHS (" + k +") >> " + afg + " >> ok")
@@ -122,14 +122,14 @@ def CalcDeleted():
     totSizeArr = []
 
     for j, entry in enumerate(arr):
-        clear_cache_path = xbmc.translatePath(entry[1])
+        clear_cache_path = xbmcvfs.translatePath(entry[1])
 
         if os.path.exists(clear_cache_path):
             anigPath = os.path.join(clear_cache_path, "animatedgifs")
-            arccPath = os.path.join(xbmc.translatePath("special://temp"), "archive_cache")
+            arccPath = os.path.join(xbmcvfs.translatePath("special://temp"), "archive_cache")
 
             if entry[3] == 'thumbnails':
-                dataBase = os.path.join(xbmc.translatePath("special://database/"), "Textures13.db")
+                dataBase = os.path.join(xbmcvfs.translatePath("special://database/"), "Textures13.db")
                 conn = sqlite3.connect(dataBase)
                 c = conn.cursor()
 
@@ -211,7 +211,7 @@ def CalcDeleted():
     msizes.append(['atv', mess])
 
     TotalfileSize = 0                                                 # get uninstalled addon data size
-    data_path = xbmc.translatePath('special://profile/addon_data/')
+    data_path = xbmcvfs.translatePath('special://profile/addon_data/')
 
     installedAddons, countInstalledAddons = getLocalAddons()
     addonData, intObjects = getLocalAddonDataFolders()
@@ -257,7 +257,7 @@ def ProcessSpecial(iMode):
 
     progress.create(strMess, strMess2)
 
-    userDataPath = xbmc.translatePath("special://userdata")
+    userDataPath = xbmcvfs.translatePath("special://userdata")
 
     for root, dirs, files in os.walk(userDataPath):
         for f in files:
@@ -370,7 +370,7 @@ def CleanTextures(iMode):
         progress = xbmcgui.DialogProgress()
         progress.create(strMess, strMess2)
 
-    dataBase = os.path.join(xbmc.translatePath("special://database/"), "Textures13.db")
+    dataBase = os.path.join(xbmcvfs.translatePath("special://database/"), "Textures13.db")
     oldfileSize = os.path.getsize(dataBase)
     conn = sqlite3.connect(dataBase)
     c = conn.cursor()
@@ -389,8 +389,8 @@ def CleanTextures(iMode):
     for d in data:
         recID = d[0]
         textureName = d[2].replace('/', os.sep)
-        thumbPath = os.path.join(xbmc.translatePath("special://thumbnails"), textureName)
-        fileName = xbmc.translatePath(d[1])
+        thumbPath = os.path.join(xbmcvfs.translatePath("special://thumbnails"), textureName)
+        fileName = xbmcvfs.translatePath(d[1])
 
         strMess = __addon__.getLocalizedString(30116)             # Checking record ID:
         strMess2 = __addon__.getLocalizedString(30014)            # Deleted:
@@ -542,7 +542,7 @@ def DeleteFiles(cleanIt, iMode):
 
     for j, entry in enumerate(arr):
         if entry[3] in cleanIt and not entry[4]:
-            clear_cache_path = xbmc.translatePath(entry[1])
+            clear_cache_path = xbmcvfs.translatePath(entry[1])
             if os.path.exists(clear_cache_path):
                 for root, dirs, files in os.walk(clear_cache_path):
                     intObjects += len(files)
@@ -561,14 +561,14 @@ def DeleteFiles(cleanIt, iMode):
 
     for j, entry in enumerate(arr):
         if entry[3] in cleanIt and not entry[4]:
-            clear_cache_path = xbmc.translatePath(entry[1])
+            clear_cache_path = xbmcvfs.translatePath(entry[1])
 
             if os.path.exists(clear_cache_path):
                 anigPath = os.path.join(clear_cache_path, "animatedgifs")
-                arccPath = os.path.join(xbmc.translatePath("special://temp"), "archive_cache")
+                arccPath = os.path.join(xbmcvfs.translatePath("special://temp"), "archive_cache")
 
                 if entry[3] == 'thumbnails':
-                    dataBase = os.path.join(xbmc.translatePath("special://database/"), "Textures13.db")
+                    dataBase = os.path.join(xbmcvfs.translatePath("special://database/"), "Textures13.db")
                     conn = sqlite3.connect(dataBase)
                     c = conn.cursor()
 
@@ -691,7 +691,7 @@ def getPackages():
 
     packAge = []
 
-    clear_cache_path = xbmc.translatePath('special://home/addons/packages')
+    clear_cache_path = xbmcvfs.translatePath('special://home/addons/packages')
     if os.path.exists(clear_cache_path):
         for root, dirs, files in os.walk(clear_cache_path):
             for e, f in enumerate(files):
@@ -750,7 +750,7 @@ def CompactDatabases(iMode):
         progress = xbmcgui.DialogProgress()
         progress.create(strMess, strMess2)
 
-    dbPath = xbmc.translatePath("special://database/")
+    dbPath = xbmcvfs.translatePath("special://database/")
     intObjects = 0
 
     if os.path.exists(dbPath):
@@ -861,7 +861,7 @@ def getLocalAddons():
 def getLocalAddonDataFolders():
     addonData = []
 
-    data_path = xbmc.translatePath('special://profile/addon_data/')
+    data_path = xbmcvfs.translatePath('special://profile/addon_data/')
 
     for item in os.listdir(data_path):
         if os.path.isdir(os.path.join(data_path, item)):
@@ -896,7 +896,7 @@ def deleteAddonData(iMode):
         progress = xbmcgui.DialogProgress()
         progress.create(strMess, strMess2)
 
-    data_path = xbmc.translatePath('special://profile/addon_data/')
+    data_path = xbmcvfs.translatePath('special://profile/addon_data/')
 
     installedAddons, countInstalledAddons = getLocalAddons()
     addonData, intObjects = getLocalAddonDataFolders()
@@ -1031,9 +1031,9 @@ def ProcessAddons(iMode):
 
     for r in repos:
         if r == "repository.xbmc.org":
-            repoxml = os.path.join(xbmc.translatePath("special://xbmc"), "addons", r, "addon.xml")
+            repoxml = os.path.join(xbmcvfs.translatePath("special://xbmc"), "addons", r, "addon.xml")
         else:
-            repoxml = os.path.join(xbmc.translatePath("special://home"), "addons", r, "addon.xml")
+            repoxml = os.path.join(xbmcvfs.translatePath("special://home"), "addons", r, "addon.xml")
 
         percent = (c / intObjects) * 100
 
@@ -1070,7 +1070,7 @@ def ProcessAddons(iMode):
             except Exception:
                 pass
 
-        if os.path.isdir(os.path.join(xbmc.translatePath("special://xbmc"), "addons", a)):
+        if os.path.isdir(os.path.join(xbmcvfs.translatePath("special://xbmc"), "addons", a)):
             continue
 
         if a in AddonsInRepo:
@@ -1116,9 +1116,9 @@ def ProcessRepos(iMode):
 
     for r in repos:
         if r == "repository.xbmc.org":
-            repoxml = os.path.join(xbmc.translatePath("special://xbmc"), "addons", r, "addon.xml")
+            repoxml = os.path.join(xbmcvfs.translatePath("special://xbmc"), "addons", r, "addon.xml")
         else:
-            repoxml = os.path.join(xbmc.translatePath("special://home"), "addons", r, "addon.xml")
+            repoxml = os.path.join(xbmcvfs.translatePath("special://home"), "addons", r, "addon.xml")
 
         xbmc.log("KCLEANER >> PROCESSING REPO >>" + r)
 
@@ -1246,7 +1246,7 @@ def getPathAddons(xmlFile, repo):
         return ""
 
     if get_extension(xmlFile) == "gz":
-        gzFile = os.path.join(xbmc.translatePath('special://temp'), 'addon.gz')
+        gzFile = os.path.join(xbmcvfs.translatePath('special://temp'), 'addon.gz')
         xbmc.log("KCLEANER >> GZFILE >>" + str(gzFile))
         with open(gzFile, 'wb') as output:
             output.write(httpdata)
@@ -1548,8 +1548,8 @@ def get_params():
 
 
 __addon__ = xbmcaddon.Addon(id='script.kcleaner')
-__addonwd__ = xbmc.translatePath(__addon__.getAddonInfo('path'))
-__addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
+__addonwd__ = xbmcvfs.translatePath(__addon__.getAddonInfo('path'))
+__addondir__ = xbmcvfs.translatePath(__addon__.getAddonInfo('profile'))
 __addonname__ = __addon__.getAddonInfo('name')
 __version__ = __addon__.getAddonInfo('version')
 
@@ -1593,7 +1593,7 @@ arr = []
 GetSettings()
 
 arr.append(['Cache', 'special://home/cache', True, "cache", False])
-if os.path.join(xbmc.translatePath('special://temp'), "") != os.path.join(xbmc.translatePath('special://home/cache'), ""):
+if os.path.join(xbmcvfs.translatePath('special://temp'), "") != os.path.join(xbmcvfs.translatePath('special://home/cache'), ""):
     arr.append(['Temp', 'special://temp', True, "cache", False])
 arr.append(['Packages', 'special://home/addons/packages', True, "packages", False])
 arr.append(['Thumbnails', 'special://thumbnails', False, "thumbnails", False])
@@ -1743,7 +1743,7 @@ if __name__ == '__main__':
         WhatToClean = ""
         for j, entry in enumerate(arr):
             if entry[3] in actionToken[mode]:
-                clear_cache_path = xbmc.translatePath(entry[1])
+                clear_cache_path = xbmcvfs.translatePath(entry[1])
                 if os.path.exists(clear_cache_path):
                     if entry[0][-1:] != ")":
                         WhatToClean += entry[0] + ", "
@@ -1766,7 +1766,7 @@ if __name__ == '__main__':
         WhatToClean = ""
         for j, entry in enumerate(arr):
             if entry[3] in actionToken[mode]:
-                clear_cache_path = xbmc.translatePath(entry[1])
+                clear_cache_path = xbmcvfs.translatePath(entry[1])
                 if os.path.exists(clear_cache_path):
                     if entry[0][-1:] != ")":
                         WhatToClean += entry[0] + ", "
@@ -1789,7 +1789,7 @@ if __name__ == '__main__':
         WhatToClean = ""
         for j, entry in enumerate(arr):
             if entry[3] in actionToken[mode]:
-                clear_cache_path = xbmc.translatePath(entry[1])
+                clear_cache_path = xbmcvfs.translatePath(entry[1])
                 if os.path.exists(clear_cache_path):
                     if entry[0][-1:] != ")":
                         WhatToClean += entry[0] + ", "
@@ -1812,7 +1812,7 @@ if __name__ == '__main__':
         WhatToClean = ""
         for j, entry in enumerate(arr):
             if entry[3] in actionToken[mode]:
-                clear_cache_path = xbmc.translatePath(entry[1])
+                clear_cache_path = xbmcvfs.translatePath(entry[1])
                 if os.path.exists(clear_cache_path):
                     if entry[0][-1:] != ")" and not entry[4]:
                         WhatToClean += entry[0] + ", "
@@ -1848,7 +1848,7 @@ if __name__ == '__main__':
         WhatToClean = ""
         for j, entry in enumerate(arr):
             if entry[3] in actionToken[mode]:
-                clear_cache_path = xbmc.translatePath(entry[1])
+                clear_cache_path = xbmcvfs.translatePath(entry[1])
                 if os.path.exists(clear_cache_path):
                     if entry[0][-1:] != ")":
                         WhatToClean += entry[0] + ", "
@@ -1872,7 +1872,7 @@ if __name__ == '__main__':
         WhatToClean = ""
         for j, entry in enumerate(arr):
             if entry[3] in actionToken[mode]:
-                clear_cache_path = xbmc.translatePath(entry[1])
+                clear_cache_path = xbmcvfs.translatePath(entry[1])
                 if os.path.exists(clear_cache_path):
                     if entry[0][-1:] != ")":
                         WhatToClean += entry[0] + ", "
@@ -1895,7 +1895,7 @@ if __name__ == '__main__':
         WhatToClean = ""
         for j, entry in enumerate(arr):
             if entry[3] in actionToken[mode]:
-                clear_cache_path = xbmc.translatePath(entry[1])
+                clear_cache_path = xbmcvfs.translatePath(entry[1])
                 if os.path.exists(clear_cache_path):
                     if entry[0][-1:] != ")" and not entry[4]:
                         WhatToClean += entry[0] + ", "
