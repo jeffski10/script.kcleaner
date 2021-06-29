@@ -1261,7 +1261,7 @@ def getPathAddons(xmlFile, repo):
     try:
         xmldoc = minidom.parseString(httpdata)
     except Exception as e:
-        xbmc.log("KCLEANER >> ERROR PARSING REPO >> " + str(e).encode('utf-8'))
+        xbmc.log("KCLEANER >> ERROR PARSING REPO >> " + str(e))
         return ""
 
     infoTag = xmldoc.getElementsByTagName("addon")
