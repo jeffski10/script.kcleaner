@@ -5,9 +5,7 @@
   <extension library="default.py" point="xbmc.python.pluginsource">
         <provides>executable</provides>
   </extension>
-  <extension library="service.py" point="xbmc.service"> 
-        <provides>executable</provides>
-  </extension>
+  <extension library="service.py" point="xbmc.service" />
   <extension point="xbmc.addon.metadata"> 
     <platform>all</platform>
     <website>http://projects.lanik.org/KodiProject_KCleaner.htm</website>
