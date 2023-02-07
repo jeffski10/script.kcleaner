@@ -24,7 +24,7 @@
         <screenshot>resources/screenshot-02.jpg</screenshot>
         <screenshot>resources/screenshot-03.jpg</screenshot>
         <banner>resources/banner.jpg</banner>
-        <logo>resources/logo.png</logo>
+        <clearlogo>resources/logo.png</clearlogo>
     </assets>
   </extension>
 </addon>
