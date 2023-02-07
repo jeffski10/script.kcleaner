@@ -5,7 +5,7 @@
   <extension library="default.py" point="xbmc.python.pluginsource">
         <provides>executable</provides>
   </extension>
-  <extension library="service.py" point="xbmc.service" start="startup"> 
+  <extension library="service.py" point="xbmc.service"> 
         <provides>executable</provides>
   </extension>
   <extension point="xbmc.addon.metadata"> 
