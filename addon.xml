@@ -1,12 +1,12 @@
-<addon id="script.kcleaner" name="KCleaner" provider-name="Dalibor Lanik" version="4.02"> 
+<addon id="script.kcleaner" name="KCleaner" provider-name="Dalibor Lanik" version="4.02">
   <requires>
-    <import addon="xbmc.python" version="3.0.0" /> 
+    <import addon="xbmc.python" version="3.0.0" />
   </requires>
   <extension library="default.py" point="xbmc.python.pluginsource">
         <provides>executable</provides>
   </extension>
   <extension library="service.py" point="xbmc.service" />
-  <extension point="xbmc.addon.metadata"> 
+  <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <website>http://projects.lanik.org/KodiProject_KCleaner.htm</website>
     <summary lang="en_GB">Clean up temporary files in Kodi.</summary>
