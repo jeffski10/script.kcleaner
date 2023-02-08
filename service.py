@@ -1,4 +1,4 @@
-﻿# ============================================================
+# ============================================================
 # KCleaner - Version 4.0 by D. Lanik (2017)
 # ------------------------------------------------------------
 # Clean up Kodi
@@ -9,6 +9,7 @@
 import time
 import xbmc
 import xbmcaddon
+import xbmcvfs
 import os
 from distutils.util import strtobool
 from default import DeleteFiles
@@ -134,8 +135,8 @@ def AutoClean():
 
 
 __addon__ = xbmcaddon.Addon(id='script.kcleaner')
-__addonwd__ = xbmc.translatePath(__addon__.getAddonInfo('path'))
-__addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
+__addonwd__ = xbmcvfs.translatePath(__addon__.getAddonInfo('path'))
+__addondir__ = xbmcvfs.translatePath(__addon__.getAddonInfo('profile'))
 __addonname__ = __addon__.getAddonInfo('name')
 __version__ = __addon__.getAddonInfo('version')
 

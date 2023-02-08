@@ -60,8 +60,8 @@ def ProcessBrokenSources(iMode):
 
         percent = (c / len(sourcesS)) * 100
 
-        message1 = strMess + k
-        message2 = strMess2 + str(int(c)) + " / " + str(int(intObjects))
+        message1 = strMess + " " + k + "\n"
+        message2 = strMess2 + " " + str(int(c)) + " / " + str(int(intObjects))
 
         progress.update(int(percent), str(message1) + str(message2))
 
@@ -278,7 +278,7 @@ def ProcessSpecial(iMode):
 
                     percent = (counter / intObjects) * 100
 
-                    message1 = strMess + str(f)
+                    message1 = strMess + str(f) + "\n"
                     message2 = strMess2 + str(int(counter)) + " / " + str(int(intObjects))
 
                     progress.update(int(percent), str(message1) + str(message2))
@@ -397,7 +397,7 @@ def CleanTextures(iMode):
 
         percent = (counter / intObjects) * 100
 
-        message1 = strMess + str(recID)
+        message1 = strMess + str(recID) + "\n"
         message2 = strMess2 + str(int(counter)) + " / " + str(int(intObjects))
 
         if iMode < 2:
@@ -583,7 +583,7 @@ def DeleteFiles(cleanIt, iMode):
 
                             percent = (count / intObjects) * 100
 
-                            message1 = strMess + entry[0]
+                            message1 = strMess + entry[0] + "\n"
                             message2 = strMess2 + str(int(count)) + " / " + str(int(intObjects))
 
                             if iMode < 2:
@@ -764,7 +764,7 @@ def CompactDatabases(iMode):
 
             percent = (counter / intObjects) * 100
 
-            message1 = strMess + f
+            message1 = strMess + f + "\n"
             message2 = strMess2 + str(int(counter)) + " / " + str(int(intObjects))
 
             if iMode < 2:
@@ -908,7 +908,7 @@ def deleteAddonData(iMode):
 
         percent = (counter / intObjects) * 100
 
-        message1 = strMess + str(d)
+        message1 = strMess + str(d) + "\n"
         message2 = strMess2 + str(int(deleted)) + " / " + str(int(intObjects))
 
         if iMode < 2:
@@ -1037,7 +1037,7 @@ def ProcessAddons(iMode):
 
         percent = (c / intObjects) * 100
 
-        message1 = strMess + r
+        message1 = strMess + r + "\n"
         message2 = strMess2 + str(int(c)) + " / " + str(int(intObjects))
 
         progress.update(int(percent), str(message1) + str(message2))
@@ -1057,7 +1057,7 @@ def ProcessAddons(iMode):
     for a in AddonsInstalled:
         percent = (c / intObjects) * 100
 
-        message1 = strMess + a
+        message1 = strMess + a + "\n"
         message2 = strMess2 + str(int(c)) + " / " + str(int(intObjects))
 
         progress.update(int(percent), str(message1) + str(message2))
@@ -1127,7 +1127,7 @@ def ProcessRepos(iMode):
 
         percent = (c / intObjects) * 100
 
-        message1 = strMess + r
+        message1 = strMess + r + "\n"
         message2 = strMess2 + str(int(c)) + " / " + str(int(intObjects))
 
         progress.update(int(percent), str(message1)  + str(message2))
